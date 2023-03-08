@@ -3,6 +3,7 @@ console.log("settings p2")
 
 // https://opentdb.com/api.php?amount=10&category=9&difficulty=easy
 
+import "./quiz.js"
 
 class Settings {
     constructor() {
@@ -17,6 +18,7 @@ class Settings {
             document.querySelector("#hard"),
         ];
 
+        this.quiz = {};
         this.startBtn.addEventListener("click", this.startQuizApp)
     }
 
@@ -28,34 +30,16 @@ class Settings {
             const difficulty = this.getDifficulty();
 
             const url = `https://opentdb.com/api.php?amount=${amount}&category=${categoryID}&difficulty=${difficulty}`
-            let result = await this.fetchData(url);
+            let { results } = await this.fetchData(url);
+            console.log(results)
 
+            this.quiz = new Quiz(this.quizDom, amount, results)
             this.toggleElements();
         } catch (err) {
             alert(err)
         }
-
-        // const amount = this.getAmount();
-        // const categoryID = this.categoryDom.value;
-        // const difficulty = this.getDifficulty();
-
-        // const url = `https://opentdb.com/api.php?amount=${amount}&category=${categoryID}&difficulty=${difficulty}`
-        // let result;
-        // // let result = this.fetchData(url);
-        // console.log("result", result)
-
-        // fetch(url)
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         this.toggleElements();
-        //     });
-
-        // if (result) {
-        //     this.quizDom.style.display = "block"
-        //     this.settingDom.style.display = "none"
-        // } else { }
-
     };
+
 
     toggleElements = () => {
         this.quizDom.style.display = "block"
@@ -71,12 +55,10 @@ class Settings {
         }
     }
 
-    fetchData = (url) => {
-        fetch(url)
-            .then((response) => response.json())
-            .then((data) => {
-                return data.result;
-            });
+    fetchData = async (url) => {
+        const response = await fetch(url);
+        const result = await response.json();
+        return result;
     }
 
     getAmount = () => {
@@ -90,4 +72,6 @@ class Settings {
 }
 
 export default Settings
+
+
 
