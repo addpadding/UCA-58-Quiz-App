@@ -1,6 +1,6 @@
 class Question {
     constructor(question) {
-        this.questionElement = document.querySelector("questions");
+        this.questionElement = document.querySelector("#questions");
         this.answerElement = [
             document.querySelector("#a1"),
             document.querySelector("#a2"),
